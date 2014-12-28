@@ -23,8 +23,11 @@ class Backend < Sinatra::Base
   post '/pay' do
     params.merge!(JSON.parse(request.body.read))
 
+    basic_auth_options = {
+      basic_auth: { username: API_KEY, password: API_SECRET}
+    }
+
     authorize_request_options = {
-      basic_auth: { username: API_KEY, password: API_SECRET},
       headers: { 'Content-Type' => 'application/json' },
       body: {
         reference:        params[:reference],
@@ -34,11 +37,15 @@ class Backend < Sinatra::Base
         currency:         params[:currency],
         capture:          false
       }.to_json
-    }
+    }.merge!(basic_auth_options)
 
     authorize_url = "https://inapp.playground.klarna.com/api/v1/users/#{params[:user_token]}/orders"
     authorize_payment_response = HTTParty.post(authorize_url, authorize_request_options)
 
-    pp authorize_payment_response
+    if (authorize_payment_response && authorize_payment_response.code == 201)
+      HTTParty.post("#{authorize_payment_response}/capture", basic_auth_options)
+    else
+      halt authorize_payment_response.code, 'something bad happened'
+    end
   end
 end
