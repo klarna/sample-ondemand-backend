@@ -43,9 +43,15 @@ class Backend < Sinatra::Base
     authorize_payment_response = HTTParty.post(authorize_url, authorize_request_options)
 
     if (authorize_payment_response && authorize_payment_response.code == 201)
-      HTTParty.post("#{authorize_payment_response}/capture", basic_auth_options)
+      capture_response = HTTParty.post("#{authorize_payment_response}/capture", basic_auth_options)
     else
-      halt authorize_payment_response.code, 'something bad happened'
+      halt authorize_payment_response.code, 'Failed to authorize purchase'
+    end
+
+    if (capture_response && capture_response.code == 200)
+      status 204
+    else
+      halt authorize_payment_response.code, 'Failed to capture order'
     end
   end
 end
