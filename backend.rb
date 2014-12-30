@@ -35,7 +35,8 @@ class Backend < Sinatra::Base
         order_amount:     centify(params[:cost]),
         order_tax_amount: centify(params[:tax_cost]),
         currency:         params[:currency],
-        capture:          false
+        capture:          false,
+        origin_proof:     params[:origin_proof]
       }.to_json
     }.merge!(basic_auth_options)
 
