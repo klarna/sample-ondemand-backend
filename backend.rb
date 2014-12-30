@@ -16,9 +16,14 @@ class Backend < Sinatra::Base
   API_KEY = 'test_d8324b98-97ce-4974-88de-eaab2fdf4f14'
   API_SECRET = 'test_846853f798502446dbaf11ee8365fef2e533ddde1f5d6a6caa961398a776c08c'
 
-  def centify(amount_string)
-    (amount_string.to_f * 100).to_i
-  end
+  # This represents the inventory
+  CATALOG = {
+    'TCKT0001' => {
+      name:     'Movie ticket - The Girl with the Dragon Tattoo',
+      cost:     9900,
+      tax_cost: 990
+    }
+  }
 
   post '/pay' do
     params.merge!(JSON.parse(request.body.read))
@@ -27,14 +32,16 @@ class Backend < Sinatra::Base
       basic_auth: { username: API_KEY, password: API_SECRET}
     }
 
+    item = CATALOG[params[:reference]]
+
     authorize_request_options = {
       headers: { 'Content-Type' => 'application/json' },
       body: {
         reference:        params[:reference],
-        name:             params[:name],
-        order_amount:     centify(params[:cost]),
-        order_tax_amount: centify(params[:tax_cost]),
-        currency:         params[:currency],
+        name:             item[:name],
+        order_amount:     item[:cost],
+        order_tax_amount: item[:tax_cost],
+        currency:         'SEK',
         capture:          false,
         origin_proof:     params[:origin_proof]
       }.to_json
