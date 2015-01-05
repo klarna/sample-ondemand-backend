@@ -28,6 +28,7 @@ class Backend < Sinatra::Base
 
   # Handle POST requests to '/pay'
   post '/pay' do
+    # Make key-value pairs from the JSON body available in the 'params' hash
     params.merge!(JSON.parse(request.body.read))
 
     basic_auth_options = {
