@@ -16,7 +16,7 @@ Once that's out of the way, open a terminal and run the following command:
 gem install bundler
 ```
 
-which will install [Bundler](http://bundler.io/), a dependency manager that will allow installing the projects dependencies. Still in the terminal, navigate to the project's directory and run:
+which will install [Bundler](http://bundler.io/), a dependency manager that will allow installing the project's dependencies. Still in the terminal, navigate to the project's directory and run:
 
 ```
 bundle install
