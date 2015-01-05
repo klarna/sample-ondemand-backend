@@ -16,7 +16,8 @@ class Backend < Sinatra::Base
   API_KEY = 'test_d8324b98-97ce-4974-88de-eaab2fdf4f14'
   API_SECRET = 'test_846853f798502446dbaf11ee8365fef2e533ddde1f5d6a6caa961398a776c08c'
 
-  # This represents the inventory
+  # This represents the system's "inventory", mapping reference strings to movie
+  # tickets.
   CATALOG = {
     'TCKT0001' => {
       name:     'Movie ticket - The Girl with the Dragon Tattoo',
@@ -25,6 +26,7 @@ class Backend < Sinatra::Base
     }
   }
 
+  # Handle POST requests to '/pay'
   post '/pay' do
     params.merge!(JSON.parse(request.body.read))
 
@@ -32,6 +34,7 @@ class Backend < Sinatra::Base
       basic_auth: { username: API_KEY, password: API_SECRET}
     }
 
+    # Build and send a request to authorize the purchase
     item = CATALOG[params[:reference]]
 
     authorize_request_options = {
@@ -51,12 +54,16 @@ class Backend < Sinatra::Base
     authorize_payment_response = HTTParty.post(authorize_url, authorize_request_options)
 
     if (authorize_payment_response && authorize_payment_response.code == 201)
+      # The purchase was authorized (and has essentially been created as a
+      # resource available at the location specified in the authorization
+      # requests's response). Capture it.
       capture_response = HTTParty.post("#{authorize_payment_response}/capture", basic_auth_options)
     else
       halt authorize_payment_response.code, 'Failed to authorize purchase'
     end
 
     if (capture_response && capture_response.code == 200)
+      # The purchase has been successfully captured, respond with 204
       status 204
     else
       halt authorize_payment_response.code, 'Failed to capture order'
