@@ -33,12 +33,13 @@ rackup
 which should result in output such as:
 
 ```
-[2015-01-05 16:37:10] INFO  WEBrick 1.3.1
-[2015-01-05 16:37:10] INFO  ruby 2.1.2 (2014-05-08) [x86_64-darwin13.0]
-[2015-01-05 16:37:10] INFO  WEBrick::HTTPServer#start: pid=32459 port=9292
+[2015-01-07T13:04:14.4616 #37268]  INFO -- : Incoming/outgoing API requests will be logged to the console.
+[2015-01-07 13:04:14] INFO  WEBrick 1.3.1
+[2015-01-07 13:04:14] INFO  ruby 2.1.2 (2014-05-08) [x86_64-darwin13.0]
+[2015-01-07 13:04:14] INFO  WEBrick::HTTPServer#start: pid=37268 port=9292
 ```
 
-indicating the server is now listening at port 9292.
+indicating the server is now listening at port 9292. Note that as stated by the launch message, all requests performed against Klarna's API will be logged to the console so that you may examine them.
 
 ## License
 The sample backend is available under the Apache 2.0 license. See the [LICENSE](./LICENSE) file for more info.
