@@ -1,5 +1,6 @@
 require 'base64'
 require 'httparty'
+require 'logger'
 require 'sinatra/base'
 
 if ENV['RACK_ENV'] == 'development'
@@ -11,6 +12,9 @@ class Backend < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end
+
+  requestLog = Logger.new STDOUT
+  requestLog.info "Incoming/outgoing API requests will be logged to the console."
 
   # Note: Storing your actual Klarna credentials this way is a bad idea
   API_KEY = 'test_d8324b98-97ce-4974-88de-eaab2fdf4f14'
@@ -35,11 +39,22 @@ class Backend < Sinatra::Base
       basic_auth: { username: API_KEY, password: API_SECRET}
     }
 
+    logging_options = {
+      logger: requestLog,
+      log_level: :debug,
+      log_format: :curl
+    }
+
+    common_options = basic_auth_options.merge(logging_options)
+
     # Build and send a request to authorize the purchase
     item = CATALOG[params[:reference]]
 
     authorize_request_options = {
       headers: { 'Content-Type' => 'application/json' },
+      logger: requestLog,
+      log_level: :debug,
+      log_format: :curl,
       body: {
         reference:        params[:reference],
         name:             item[:name],
@@ -49,7 +64,7 @@ class Backend < Sinatra::Base
         capture:          false,
         origin_proof:     params[:origin_proof]
       }.to_json
-    }.merge!(basic_auth_options)
+    }.merge!(common_options)
 
     authorize_url = "https://inapp.playground.klarna.com/api/v1/users/#{params[:user_token]}/orders"
     authorize_payment_response = HTTParty.post(authorize_url, authorize_request_options)
@@ -58,7 +73,7 @@ class Backend < Sinatra::Base
       # The purchase was authorized (and has essentially been created as a
       # resource available at the location specified in the authorization
       # requests's response). Capture it.
-      capture_response = HTTParty.post("#{authorize_payment_response}/capture", basic_auth_options)
+      capture_response = HTTParty.post("#{authorize_payment_response}/capture", common_options)
     else
       halt authorize_payment_response.code, 'Failed to authorize purchase'
     end
