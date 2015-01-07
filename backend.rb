@@ -13,8 +13,8 @@ class Backend < Sinatra::Base
     register Sinatra::Reloader
   end
 
-  requestLog = Logger.new STDOUT
-  requestLog.info "Incoming/outgoing API requests will be logged to the console."
+  request_log = Logger.new STDOUT
+  request_log.info "Incoming/outgoing API requests will be logged to the console."
 
   # Note: Storing your actual Klarna credentials this way is a bad idea
   API_KEY = 'test_d8324b98-97ce-4974-88de-eaab2fdf4f14'
@@ -40,7 +40,7 @@ class Backend < Sinatra::Base
     }
 
     logging_options = {
-      logger: requestLog,
+      logger: request_log,
       log_level: :debug,
       log_format: :curl
     }
@@ -52,9 +52,6 @@ class Backend < Sinatra::Base
 
     authorize_request_options = {
       headers: { 'Content-Type' => 'application/json' },
-      logger: requestLog,
-      log_level: :debug,
-      log_format: :curl,
       body: {
         reference:        params[:reference],
         name:             item[:name],
