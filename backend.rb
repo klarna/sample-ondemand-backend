@@ -62,7 +62,7 @@ class Backend < Sinatra::Base
     authorize_url = "https://inapp.playground.klarna.com/api/v1/users/#{params[:user_token]}/orders"
     authorize_response = HTTParty.post(authorize_url, authorize_request.merge(logging_options))
 
-    if (authorize_payment_response && authorize_payment_response.code == 201)
+    if authorize_response && authorize_response.code == 201
       # The purchase was authorized (and has essentially been created as a
       # resource available at the location specified in the authorization
       # requests's response). Capture it.
@@ -71,7 +71,7 @@ class Backend < Sinatra::Base
       halt authorize_payment_response.code, 'Failed to authorize purchase'
     end
 
-    if (capture_response && capture_response.code == 200)
+    if capture_response && capture_response.code == 200
       # The purchase has been successfully captured, respond with 204
       status 204
     else
