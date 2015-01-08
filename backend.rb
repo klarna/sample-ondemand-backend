@@ -80,7 +80,7 @@ class Backend < Sinatra::Base
       # The purchase has been successfully captured, respond with 204
       status 204
     else
-      halt authorize_response.code, 'Failed to capture order'
+      halt capture_response.code, 'Failed to capture order'
     end
   end
 end
