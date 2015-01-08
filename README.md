@@ -4,6 +4,8 @@ This project serves as a very slim backend designed to work with Klarna on Deman
 
 The server itself is implemented in [Ruby](https://www.ruby-lang.org/en/) using [Sinatra](http://www.sinatrarb.com/). Even if you are not familiar with the language do not worry, as the code has been extensively documented. The file that contains the entirety of the server is [backend.rb](./backend.rb).
 
+The server logs all API requests it performs to the terminal, so you can see what's going on even without diving into the code.
+
 ## Integration with the Klarna on Demand API
 This sample backend interacts directly with Klarna's on Demand API, specifically for the purpose of authorizing and capturing orders. You can read more about the API in the [official documentation (coming soon)](http://developers.klarna.com).
 
@@ -39,7 +41,7 @@ which should result in output such as:
 [2015-01-07 13:04:14] INFO  WEBrick::HTTPServer#start: pid=37268 port=9292
 ```
 
-indicating the server is now listening at port 9292. Note that as stated by the launch message, all requests performed against Klarna's API will be logged to the console so that you may examine them.
+indicating the server is now listening at port 9292.
 
 ## License
 The sample backend is available under the Apache 2.0 license. See the [LICENSE](./LICENSE) file for more info.
