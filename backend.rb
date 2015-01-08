@@ -66,16 +66,21 @@ class Backend < Sinatra::Base
       # The purchase was authorized (and has essentially been created as a
       # resource available at the location specified in the authorization
       # requests's response). Capture it.
-      capture_response = HTTParty.post("#{authorize_payment_response}/capture", common_options)
+      capture_request = {
+        basic_auth: { username: API_KEY, password: API_SECRET },
+      }
+
+      capture_url = authorize_response + "/capture"
+      capture_response = HTTParty.post(capture_url, capture_request.merge(logging_options))
     else
-      halt authorize_payment_response.code, 'Failed to authorize purchase'
+      halt authorize_response.code, 'Failed to authorize purchase'
     end
 
     if capture_response && capture_response.code == 200
       # The purchase has been successfully captured, respond with 204
       status 204
     else
-      halt authorize_payment_response.code, 'Failed to capture order'
+      halt authorize_response.code, 'Failed to capture order'
     end
   end
 end
