@@ -36,22 +36,17 @@ class Backend < Sinatra::Base
     # Make key-value pairs from the JSON body available in the 'params' hash
     params.merge!(JSON.parse(request.body.read))
 
-    basic_auth_options = {
-      basic_auth: { username: API_KEY, password: API_SECRET}
-    }
-
     logging_options = {
       logger: request_log,
       log_level: :debug,
       log_format: :curl
     }
 
-    common_options = basic_auth_options.merge(logging_options)
-
     # Build and send a request to authorize the purchase
     item = CATALOG[params[:reference]]
 
-    authorize_request_options = {
+    authorize_request = {
+      basic_auth: { username: API_KEY, password: API_SECRET },
       headers: { 'Content-Type' => 'application/json' },
       body: {
         reference:        params[:reference],
@@ -62,10 +57,10 @@ class Backend < Sinatra::Base
         capture:          false,
         origin_proof:     params[:origin_proof]
       }.to_json
-    }.merge!(common_options)
+    }
 
     authorize_url = "https://inapp.playground.klarna.com/api/v1/users/#{params[:user_token]}/orders"
-    authorize_payment_response = HTTParty.post(authorize_url, authorize_request_options)
+    authorize_response = HTTParty.post(authorize_url, authorize_request.merge(logging_options))
 
     if (authorize_payment_response && authorize_payment_response.code == 201)
       # The purchase was authorized (and has essentially been created as a
