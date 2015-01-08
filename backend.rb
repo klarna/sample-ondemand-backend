@@ -26,6 +26,7 @@ class Backend < Sinatra::Base
     'TCKT0001' => {
       name:     'Movie ticket - The Girl with the Dragon Tattoo',
       cost:     9900,
+      currency: 'SEK',
       tax_cost: 990
     }
   }
@@ -57,7 +58,7 @@ class Backend < Sinatra::Base
         name:             item[:name],
         order_amount:     item[:cost],
         order_tax_amount: item[:tax_cost],
-        currency:         'SEK',
+        currency:         item[:currency],
         capture:          false,
         origin_proof:     params[:origin_proof]
       }.to_json
