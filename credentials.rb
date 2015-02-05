@@ -1,10 +1,10 @@
 module Credentials
-  # This module contains placeholder credentials, use the
-  # "set_credentials" rake task to replace these with your
-  # own credentials
+  # This module contains (functional) placeholder credentials, use the
+  # "set_credentials" rake task if you wish to replace these with your
+  # own credentials.
   #
-  # Note that storing your actual Klarna credentials in such
-  # a manner is a very bad idea
+  # Note that storing your actual Klarna credentials in such a manner
+  # is a very bad idea.
 
   def self.api_key
     'test_d8324b98-97ce-4974-88de-eaab2fdf4f14'
