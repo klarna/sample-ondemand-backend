@@ -6,5 +6,6 @@ gem 'sinatra'
 
 group :development, :test do
   gem 'pry'
+  gem 'rake'
   gem 'sinatra-reloader'
 end
