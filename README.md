@@ -7,7 +7,7 @@ The server itself is implemented in [Ruby](https://www.ruby-lang.org/en/) using 
 The server logs all API requests it performs to the terminal, so you can see what's going on even without diving into the code.
 
 ## Integration with the Klarna on Demand API
-This sample backend interacts directly with Klarna's on Demand API, specifically for the purpose of authorizing and capturing orders. You can read more about the API in the [official documentation (coming soon)](http://developers.klarna.com).
+This sample backend interacts directly with Klarna's on Demand API, specifically for the purpose of authorizing and capturing orders. You can read more about the API [here](http://docs.inapp.apiary.io/).
 
 ## Running the server
 If you wish to run the server, the first step is [installing Ruby](https://www.ruby-lang.org/en/documentation/installation/).
@@ -42,6 +42,19 @@ which should result in output such as:
 ```
 
 indicating the server is now listening at port 9292.
+
+### Using your credentials
+The server's code includes placeholder credentials that are set up to work with those supplied as an example in the SDK's documentation. You can use your own credentials by setting the `API_KEY` and `API_SECRET` environment variables before running the server. For example, you could supply your own credentials by running the server like so:
+
+```
+API_KEY=my_api_key API_SECRET=my_api_secret rackup
+```
+
+or for Windows based systems:
+
+```
+cmd /C "set API_KEY=my_api_key && set API_SECRET=my_api_secret && rackup"
+```
 
 ## License
 The sample backend is available under the Apache 2.0 license. See the [LICENSE](./LICENSE) file for more info.

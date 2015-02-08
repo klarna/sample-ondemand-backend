@@ -17,8 +17,8 @@ class Backend < Sinatra::Base
   request_log.info "Incoming/outgoing API requests will be logged to the console."
 
   # Note: Storing your actual Klarna credentials this way is a bad idea
-  API_KEY = 'test_d8324b98-97ce-4974-88de-eaab2fdf4f14'
-  API_SECRET = 'test_846853f798502446dbaf11ee8365fef2e533ddde1f5d6a6caa961398a776c08c'
+  API_KEY = ENV['API_KEY'] || 'test_d8324b98-97ce-4974-88de-eaab2fdf4f14'
+  API_SECRET = ENV['API_SECRET'] || 'test_846853f798502446dbaf11ee8365fef2e533ddde1f5d6a6caa961398a776c08c'
 
   # This represents the system's "inventory", mapping reference strings to movie
   # tickets.
