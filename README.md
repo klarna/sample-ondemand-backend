@@ -1,6 +1,6 @@
 # Sample App Backend
 
-This project serves as a very slim backend designed to work with Klarna on Demand's sample applications (both [iOS](https://github.com/klarna/klarna-on-demand-ios) and [Android](https://github.com/klarna/klarna-on-demand-android)) in order to demonstrate proper use of Klarna's on Demand SDK. This server receives purchase requests issued by the sample applications, and forwards these requests to Klarna.
+This project serves as a very slim backend designed to work with Klarna on Demand's sample applications ([iOS](https://github.com/klarna/klarna-on-demand-ios),  [Android](https://github.com/klarna/klarna-on-demand-android) or [Javascript](https://github.com/klarna/klarna-on-demand-js)) in order to demonstrate proper use of Klarna's on Demand SDK. This server receives purchase requests issued by the sample applications, and forwards these requests to Klarna.
 
 The server itself is implemented in [Ruby](https://www.ruby-lang.org/en/) using [Sinatra](http://www.sinatrarb.com/). Even if you are not familiar with the language do not worry, as the code has been extensively documented. The file that contains the entirety of the server is [backend.rb](./backend.rb).
 
