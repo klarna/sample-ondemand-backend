@@ -31,6 +31,17 @@ class Backend < Sinatra::Base
     }
   }
 
+  # Allow cross-domain calls
+  before do
+    response.headers['Access-Control-Allow-Origin'] = '*'
+  end
+
+  options '/pay' do
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+    status 200
+  end
+
   # Handle POST requests to '/pay'
   post '/pay' do
     # Make key-value pairs from the JSON body available in the 'params' hash
