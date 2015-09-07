@@ -27,7 +27,7 @@ class Backend < Sinatra::Base
       name:     'Movie ticket - The Girl with the Dragon Tattoo',
       cost:     9900,
       currency: 'SEK',
-      tax_cost: 990
+      tax_cost: 900
     }
   }
 
